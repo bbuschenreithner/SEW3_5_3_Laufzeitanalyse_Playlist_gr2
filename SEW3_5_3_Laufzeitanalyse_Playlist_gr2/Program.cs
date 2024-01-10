@@ -78,18 +78,28 @@
 
             void checkList(List<int> testList, List<List<int>> finalList, List<Song> songs, int searchDuration)
             {
-                if (finalList.Count <= 10)
+                if (finalList.Count < 10)
                 {
                     finalList.Add(new List<int>(testList));
                 }
                 else
                 {
-                    foreach(List<int> actualBestSongs in finalList)
+                    int testSongsDuration = calculateDuration(testList, songs);
+                    if (testSongsDuration > searchDuration)
+                    {
+                        return;
+                    }
+                    int diffTestSongs = searchDuration - testSongsDuration;
+                    foreach (List<int> actualBestSongs in finalList)
                     {
                         int durActual = calculateDuration(actualBestSongs, songs);
-                        int diffAtual = durActual - searchDuration;
-                        int durNew = calculateDuration(testList, songs);
-                        if (durActual )
+                        int diffActual = durActual - searchDuration;
+                        if (diffTestSongs < diffActual)
+                        {
+                            finalList.Insert(finalList.IndexOf(actualBestSongs), new List<int>(testList));
+                            finalList.RemoveAt(finalList.Count - 1);
+                            break;
+                        }
                     }
                 }
             }
