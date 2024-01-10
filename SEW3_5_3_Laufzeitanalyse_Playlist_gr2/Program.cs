@@ -4,9 +4,9 @@
     {
         static void Main(string[] args)
         {
-            const int arrSize = 5; // Anzahl Lieder, die verarbeitet werden
+            const int arrSize = 15; // Anzahl Lieder, die verarbeitet werden
 
-            int searchDuration = 200; // in Sekunden
+            int searchDuration = 700; // in Sekunden
             // searchDuration = Convert.ToInt32(Console.ReadLine());
 
             int[] arr = new int[arrSize];
@@ -47,7 +47,19 @@
             ulong counter = 0;
             recursiveTest(arr, new List<int>(), finalList, songs, 0, arrSize, ref counter, searchDuration); // Start des rekursiven Aufruf
 
-            void recursiveTest(int[] arr, List<int> testList, List<List<int>> finalList, List<Song> songs ,int n, int maxSize, ref ulong counter, int searchDuration)
+            // Ausgabe FinalList!!!
+            // Playlistlänge: Songname1 (sekunden), Songname2 (sekunden),...
+            foreach (List<int> bss in finalList)
+            {
+                Console.Write(calculateDuration(bss, songs) + ": ");
+                foreach(int songIndex in bss)
+                {
+                    Console.Write(songIndex + ", ");
+                }
+                Console.WriteLine();
+            }
+
+            void recursiveTest(int[] arr, List<int> testList, List<List<int>> finalList, List<Song> songs, int n, int maxSize, ref ulong counter, int searchDuration)
             {
                 if (n >= maxSize) // Abbruchbedingung, nach letztem Element Abbruch
                 {
@@ -93,7 +105,7 @@
                     foreach (List<int> actualBestSongs in finalList)
                     {
                         int durActual = calculateDuration(actualBestSongs, songs);
-                        int diffActual = durActual - searchDuration;
+                        int diffActual = searchDuration - durActual;
                         if (diffTestSongs < diffActual)
                         {
                             finalList.Insert(finalList.IndexOf(actualBestSongs), new List<int>(testList));
